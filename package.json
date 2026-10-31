@@ -1,8 +1,11 @@
 {
   "name": "scraper-api",
   "version": "1.0.0",
-  "description": "Express Scraper API for Vercel",
+  "description": "Express and Cheerio Scraper API configured for Vercel deployment",
   "main": "index.js",
+  "engines": {
+    "node": ">=18.x"
+  },
   "scripts": {
     "start": "node index.js"
   },
