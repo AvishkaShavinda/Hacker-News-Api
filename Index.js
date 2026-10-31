@@ -4,7 +4,8 @@ const cheerio = require('cheerio');
 
 const app = express();
 
-app.get('/api/news', async (req, res) => {
+// කෙලින්ම root එකට (/ ) හෝ /api/news ට ගිය විට JSON දත්ත ලබා දීම
+app.get('/', async (req, res) => {
     try {
         const url = 'https://thehackernews.com/';
         const { data } = await axios.get(url, {
@@ -16,7 +17,6 @@ app.get('/api/news', async (req, res) => {
         const $ = cheerio.load(data);
         const articles = [];
 
-        // The Hacker News වල පුවත් අඩංගු element එක (Home page structure එකට අනුව)
         $('.body-post').each((index, element) => {
             const title = $(element).find('.home-title').text().trim();
             const link = $(element).attr('href') || $(element).find('a').attr('href');
@@ -37,7 +37,7 @@ app.get('/api/news', async (req, res) => {
 
         res.json({
             success: true,
-            count: articles.length,
+            total: articles.length,
             data: articles
         });
 
@@ -50,7 +50,7 @@ app.get('/api/news', async (req, res) => {
     }
 });
 
-// Local එකේදී Run කිරීමට (Vercel සඳහා අවශ්‍ය නොවේ)
+// Local පරිසරයේ Run කිරීමට
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
